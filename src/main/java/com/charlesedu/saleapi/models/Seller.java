@@ -5,7 +5,7 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TB_SALE")
-public class Sale extends AbstractEntity<Long> {
+@Table(name = "TB_SELLER")
+public class Seller extends AbstractEntity<Long> {
     
 }
