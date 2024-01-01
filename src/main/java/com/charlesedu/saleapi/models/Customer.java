@@ -22,7 +22,7 @@ public class Customer extends AbstractEntity<Long> {
     @Column(nullable = false, unique = true)
     private String telephone;
     
-    @NotBlank
+    @NotNull
     private Boolean status;
 
     public Customer() {
