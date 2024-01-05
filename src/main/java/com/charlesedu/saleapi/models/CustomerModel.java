@@ -10,7 +10,7 @@ import jakarta.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_CUSTOMER")
-public class Customer {
+public class CustomerModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,10 +24,10 @@ public class Customer {
 
     private Boolean status;
 
-    public Customer() {
+    public CustomerModel() {
     }
 
-    public Customer(Long id, String name, String telephone, Boolean status) {
+    public CustomerModel(Long id, String name, String telephone, Boolean status) {
         this.id = id;
         this.name = name;
         this.telephone = telephone;
@@ -82,7 +82,7 @@ public class Customer {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Customer other = (Customer) obj;
+        CustomerModel other = (CustomerModel) obj;
         if (id == null) {
             if (other.id != null)
                 return false;

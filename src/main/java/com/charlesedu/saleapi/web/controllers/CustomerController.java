@@ -9,12 +9,13 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
-import com.charlesedu.saleapi.models.Customer;
+import com.charlesedu.saleapi.models.CustomerModel;
 import com.charlesedu.saleapi.services.CustomerService;
 import com.charlesedu.saleapi.web.utils.Utils;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,50 +31,63 @@ public class CustomerController {
     private CustomerService customerService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@Valid @RequestBody Customer customer, BindingResult result) {
+    public ResponseEntity<?> save(@Valid @RequestBody CustomerModel customerModel, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.status(400).body("Invalid data");
         }
 
-        customer = customerService.save(customer);
+        customerModel = customerService.save(customerModel);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(customer.getId())
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(customerModel.getId())
                 .toUri();
 
-        return ResponseEntity.created(uri).body(customer);
+        return ResponseEntity.created(uri).body(customerModel);
     }
 
     @GetMapping("/list")
-    public ResponseEntity<List<Customer>> findAll() {
-        List<Customer> customers = customerService.findAll();
+    public ResponseEntity<List<CustomerModel>> findAll() {
+        List<CustomerModel> customers = customerService.findAll();
 
         return ResponseEntity.ok().body(customers);
     }
 
     @GetMapping("/list/{id}")
-    public ResponseEntity<Customer> findById(@PathVariable("id") Long id) {
-        Customer customer = customerService.findById(id);
+    public ResponseEntity<CustomerModel> findById(@PathVariable("id") Long id) {
+        CustomerModel customer = customerService.findById(id);
 
         return ResponseEntity.ok().body(customer);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody Customer customer,
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerModel customerModel,
             BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.status(400).body("Invalid data");
         }
 
-        var customerExists = customerService.findById(id);
+        var customer = customerService.findById(id);
 
-        if (customerExists == null) {
+        if (customer == null) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
         }
 
-        Utils.copyNonNullProperties(customer, customerExists);
+        Utils.copyNonNullProperties(customerModel, customer);
 
-        var updatedCustomer = customerService.save(customerExists);
+        var updatedCustomer = customerService.save(customer);
 
         return ResponseEntity.ok().body(updatedCustomer);
     }
+
+    // @DeleteMapping("/delete/{id}")
+    // public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    //     var customer = customerService.findById(id);
+
+    //     if (customer == null) {
+    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
+    //     }
+
+    //     customerService.delete(customer);
+
+    //     return ResponseEntity.ok().body("Customer deleted");
+    // }
 }
