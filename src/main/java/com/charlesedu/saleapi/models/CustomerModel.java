@@ -6,6 +6,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
@@ -25,6 +26,7 @@ public class CustomerModel {
     @Size(min = 11, max = 11, message = "Telephone must have 11 characters")
     private String telephone;
 
+    @NotNull(message = "Status is mandatory")
     private Boolean status;
 
     public CustomerModel() {
