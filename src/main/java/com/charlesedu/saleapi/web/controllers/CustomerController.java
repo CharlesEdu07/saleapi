@@ -10,7 +10,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.charlesedu.saleapi.models.CustomerModel;
 import com.charlesedu.saleapi.services.CustomerService;
-import com.charlesedu.saleapi.web.utils.Utils;
 
 import jakarta.validation.Valid;
 
@@ -32,7 +31,7 @@ public class CustomerController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody CustomerModel customerModel, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(400).body("Invalid data");
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
         customerModel = customerService.save(customerModel);
@@ -60,15 +59,12 @@ public class CustomerController {
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody CustomerModel customerModel,
             BindingResult result) {
+
         if (result.hasErrors()) {
-            return ResponseEntity.status(400).body("Invalid data");
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
-        var customer = customerService.findById(id);
-
-        Utils.copyNonNullProperties(customerModel, customer);
-
-        var updatedCustomer = customerService.save(customer);
+        CustomerModel updatedCustomer = customerService.update(id, customerModel);
 
         return ResponseEntity.ok().body(updatedCustomer);
     }

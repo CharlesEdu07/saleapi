@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
@@ -16,9 +17,11 @@ public class CustomerModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
     @Size(min = 3, message = "Name must have at least 3 characters")
     private String name;
 
+    @NotBlank(message = "Telephone is mandatory")
     @Size(min = 11, max = 11, message = "Telephone must have 11 characters")
     private String telephone;
 

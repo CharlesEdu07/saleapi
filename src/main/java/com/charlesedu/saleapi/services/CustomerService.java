@@ -32,6 +32,27 @@ public class CustomerService {
         return customer.orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
+    public CustomerModel update(Long id, CustomerModel customerModel) {
+        Optional<CustomerModel> customer = repository.findById(id);
+
+        if (customer.isPresent()) {
+            CustomerModel updatedCustomer = customer.get();
+
+            updateData(updatedCustomer, customerModel);
+
+            repository.save(updatedCustomer);
+
+            return updatedCustomer;
+        } else {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    private void updateData(CustomerModel entity, CustomerModel obj) {
+        entity.setName(obj.getName());
+        entity.setTelephone(obj.getTelephone());
+    }
+
     public void deleteById(Long id) {
         try {
             if (repository.existsById(id)) {
