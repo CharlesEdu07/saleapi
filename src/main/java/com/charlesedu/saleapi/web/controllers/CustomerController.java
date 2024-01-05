@@ -4,7 +4,6 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -15,6 +14,7 @@ import com.charlesedu.saleapi.web.utils.Utils;
 
 import jakarta.validation.Valid;
 
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -66,10 +66,6 @@ public class CustomerController {
 
         var customer = customerService.findById(id);
 
-        if (customer == null) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
-        }
-
         Utils.copyNonNullProperties(customerModel, customer);
 
         var updatedCustomer = customerService.save(customer);
@@ -77,16 +73,10 @@ public class CustomerController {
         return ResponseEntity.ok().body(updatedCustomer);
     }
 
-    // @DeleteMapping("/delete/{id}")
-    // public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-    //     var customer = customerService.findById(id);
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        customerService.deleteById(id);
 
-    //     if (customer == null) {
-    //         return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
-    //     }
-
-    //     customerService.delete(customer);
-
-    //     return ResponseEntity.ok().body("Customer deleted");
-    // }
+        return ResponseEntity.ok().body("Customer deleted");
+    }
 }
