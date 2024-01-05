@@ -2,6 +2,9 @@ package com.charlesedu.saleapi.models;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -10,28 +13,42 @@ import jakarta.validation.constraints.Size;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_CUSTOMER")
-public class Customer extends AbstractEntity<Long> {
-    
+public class Customer {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
     @NotBlank
     @Size(min = 3)
     @Column(nullable = false)
     private String name;
-    
+
+    @NotBlank
     @NotNull
     @Size(min = 11, max = 11)
     @Column(nullable = false, unique = true)
     private String telephone;
-    
+
     @NotNull
     private Boolean status;
 
     public Customer() {
     }
 
-    public Customer(String name, String telephone, Boolean status) {
+    public Customer(Long id, String name, String telephone, Boolean status) {
+        this.id = id;
         this.name = name;
         this.telephone = telephone;
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -56,5 +73,30 @@ public class Customer extends AbstractEntity<Long> {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        Customer other = (Customer) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
     }
 }

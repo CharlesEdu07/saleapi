@@ -16,6 +16,7 @@ import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -29,7 +30,7 @@ public class CustomerController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody Customer customer, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.badRequest().body("Invalid data");
+            return ResponseEntity.status(400).body("Invalid data");
         }
 
         customer = customerService.save(customer);
@@ -50,6 +51,24 @@ public class CustomerController {
     @GetMapping("/list/{id}")
     public ResponseEntity<Customer> findById(@PathVariable("id") Long id) {
         Customer customer = customerService.findById(id);
+
+        return ResponseEntity.ok().body(customer);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody Customer customer,
+            BindingResult result) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(400).body("Invalid data");
+        }
+
+        var customerExists = customerService.findById(id);
+
+        if (customerExists == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        customer = customerService.update(id, customer);
 
         return ResponseEntity.ok().body(customer);
     }
