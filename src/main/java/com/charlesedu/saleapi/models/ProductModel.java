@@ -1,10 +1,19 @@
 package com.charlesedu.saleapi.models;
 
+import java.math.BigDecimal;
+
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 @Entity
@@ -15,13 +24,19 @@ public class ProductModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "Name is mandatory")
+    @Size(min = 3, message = "Name must have at least 3 characters")
     private String name;
-    private String price;
+
+    @NotNull(message = "Price is mandatory")
+    @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
+    @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
+    private BigDecimal price;
 
     public ProductModel() {
     }
 
-    public ProductModel(Long id, String name, String price) {
+    public ProductModel(Long id, String name, BigDecimal price) {
         this.id = id;
         this.name = name;
         this.price = price;
@@ -43,11 +58,11 @@ public class ProductModel {
         this.name = name;
     }
 
-    public String getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
