@@ -9,7 +9,7 @@ import jakarta.persistence.Table;
 @SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_SALE")
-public class Sale {
+public class SaleModel {
     
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -8,9 +8,9 @@ import jakarta.persistence.Table;
 
 @SuppressWarnings("serial")
 @Entity
-@Table(name = "TB_PRODUCT")
-public class Product {
-
+@Table(name = "TB_SELLER")
+public class SellerModel {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
