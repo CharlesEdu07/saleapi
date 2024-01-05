@@ -4,12 +4,14 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.RequestMapping;
 import com.charlesedu.saleapi.models.Customer;
 import com.charlesedu.saleapi.services.CustomerService;
+import com.charlesedu.saleapi.web.utils.Utils;
 
 import jakarta.validation.Valid;
 
@@ -65,11 +67,13 @@ public class CustomerController {
         var customerExists = customerService.findById(id);
 
         if (customerExists == null) {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Customer not found");
         }
 
-        customer = customerService.update(id, customer);
+        Utils.copyNonNullProperties(customer, customerExists);
 
-        return ResponseEntity.ok().body(customer);
+        var updatedCustomer = customerService.save(customerExists);
+
+        return ResponseEntity.ok().body(updatedCustomer);
     }
 }

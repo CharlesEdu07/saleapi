@@ -1,13 +1,10 @@
 package com.charlesedu.saleapi.models;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
 @SuppressWarnings("serial")
@@ -19,18 +16,12 @@ public class Customer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
-    @Size(min = 3)
-    @Column(nullable = false)
+    @Size(min = 3, message = "Name must have at least 3 characters")
     private String name;
 
-    @NotBlank
-    @NotNull
-    @Size(min = 11, max = 11)
-    @Column(nullable = false, unique = true)
+    @Size(min = 11, max = 11, message = "Telephone must have 11 characters")
     private String telephone;
 
-    @NotNull
     private Boolean status;
 
     public Customer() {
