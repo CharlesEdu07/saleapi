@@ -31,8 +31,6 @@ public class ProductController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody ProductModel productModel, BindingResult result) {
         if (result.hasErrors()) {
-            System.out.println("Dudu" + result.getAllErrors().get(0).getDefaultMessage());
-
             return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
