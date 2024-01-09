@@ -48,4 +48,80 @@ public class SellerModel {
     @DateTimeFormat(iso = ISO.DATE)
     @Column(name = "exit_date", columnDefinition = "DATE")
     private LocalDate exitDate;
+
+    public SellerModel() {
+    }
+
+    public SellerModel(Long id, String name, BigDecimal salary, LocalDate admissionDate, LocalDate exitDate) {
+        this.id = id;
+        this.name = name;
+        this.salary = salary;
+        this.admissionDate = admissionDate;
+        this.exitDate = exitDate;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public BigDecimal getSalary() {
+        return salary;
+    }
+
+    public void setSalary(BigDecimal salary) {
+        this.salary = salary;
+    }
+
+    public LocalDate getAdmissionDate() {
+        return admissionDate;
+    }
+
+    public void setAdmissionDate(LocalDate admissionDate) {
+        this.admissionDate = admissionDate;
+    }
+
+    public LocalDate getExitDate() {
+        return exitDate;
+    }
+
+    public void setExitDate(LocalDate exitDate) {
+        this.exitDate = exitDate;
+    }
+
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((id == null) ? 0 : id.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        SellerModel other = (SellerModel) obj;
+        if (id == null) {
+            if (other.id != null)
+                return false;
+        } else if (!id.equals(other.id))
+            return false;
+        return true;
+    }
 }
