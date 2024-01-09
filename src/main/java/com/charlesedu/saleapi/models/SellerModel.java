@@ -3,11 +3,12 @@ package com.charlesedu.saleapi.models;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat.Style;
 
-import org.springframework.format.annotation.DateTimeFormat;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -29,7 +30,7 @@ public class SellerModel {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotBlank
+    @NotBlank(message = "Name is mandatory")
     @Size(min = 3, max = 255)
     @Column(nullable = false, unique = true)
     private String name;
@@ -39,12 +40,14 @@ public class SellerModel {
     @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
     private BigDecimal salary;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @NotNull
     @PastOrPresent(message = "Admission date must be in the past or present")
     @DateTimeFormat(iso = ISO.DATE)
     @Column(name = "admission_date", nullable = false, columnDefinition = "DATE")
     private LocalDate admissionDate;
 
+    @JsonFormat(pattern = "dd/MM/yyyy")
     @DateTimeFormat(iso = ISO.DATE)
     @Column(name = "exit_date", columnDefinition = "DATE")
     private LocalDate exitDate;

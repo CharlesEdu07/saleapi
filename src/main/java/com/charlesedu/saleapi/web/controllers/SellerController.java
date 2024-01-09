@@ -30,7 +30,7 @@ public class SellerController {
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody SellerModel sellerModel, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+            return ResponseEntity.status(400).body(result.getAllErrors());
         }
 
         sellerModel = sellerService.save(sellerModel);
@@ -72,6 +72,6 @@ public class SellerController {
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         sellerService.deleteById(id);
 
-        return ResponseEntity.ok().body("Customer deleted");
+        return ResponseEntity.ok().body("Seller deleted");
     }
 }
