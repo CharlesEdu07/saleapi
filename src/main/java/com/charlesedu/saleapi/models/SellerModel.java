@@ -32,7 +32,7 @@ public class SellerModel {
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, max = 255)
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String name;
 
     @NotNull
