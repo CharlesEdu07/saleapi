@@ -32,7 +32,7 @@ public class SaleController {
 
         saleModel = saleService.save(saleModel);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(12)
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saleModel.getId())
                 .toUri();
 
         return ResponseEntity.created(uri).body(saleModel);

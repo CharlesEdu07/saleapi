@@ -78,8 +78,6 @@ public class SaleService {
     }
 
     public SaleModel fromDTO(SaleDTO saleDTO) {
-        System.out.println(saleDTO.getCustomer().getTelephone());
-
         CustomerModel customer = customerService.fromDTO(saleDTO.getCustomer());
 
         return new SaleModel(null, Instant.now(), customer);
