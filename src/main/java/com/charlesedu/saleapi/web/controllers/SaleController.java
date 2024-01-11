@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.charlesedu.saleapi.dto.CustomerDTO;
 import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.services.SaleService;
 
@@ -28,51 +29,51 @@ public class SaleController {
     @Autowired
     private SaleService saleService;
 
-    @PostMapping("/save")
-    public ResponseEntity<?> save(@Valid @RequestBody SaleModel saleModel, BindingResult result) {
-        if (result.hasErrors()) {
-            return ResponseEntity.status(400).body(result.getAllErrors());
-        }
+    // @PostMapping("/save")
+    // public ResponseEntity<?> save(@Valid @RequestBody CustomerDTO customerDTO, BindingResult result) {
+    //     if (result.hasErrors()) {
+    //         return ResponseEntity.status(400).body(result.getAllErrors());
+    //     }
 
-        saleModel = saleService.save(saleModel);
+    //     saleModel = saleService.save(saleModel);
 
-        URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saleModel.getId())
-                .toUri();
+    //     URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saleModel.getId())
+    //             .toUri();
 
-        return ResponseEntity.created(uri).body(saleModel);
-    }
+    //     return ResponseEntity.created(uri).body(saleModel);
+    // }
 
-    @GetMapping("/list")
-    public ResponseEntity<List<SaleModel>> findAll() {
-        List<SaleModel> sales = saleService.findAll();
+    // @GetMapping("/list")
+    // public ResponseEntity<List<SaleModel>> findAll() {
+    //     List<SaleModel> sales = saleService.findAll();
 
-        return ResponseEntity.ok().body(sales);
-    }
+    //     return ResponseEntity.ok().body(sales);
+    // }
 
-    @GetMapping("/list/{id}")
-    public ResponseEntity<SaleModel> findById(@PathVariable("id") Long id) {
-        SaleModel sale = saleService.findById(id);
+    // @GetMapping("/list/{id}")
+    // public ResponseEntity<SaleModel> findById(@PathVariable("id") Long id) {
+    //     SaleModel sale = saleService.findById(id);
 
-        return ResponseEntity.ok().body(sale);
-    }
+    //     return ResponseEntity.ok().body(sale);
+    // }
 
-    @PutMapping("/update/{id}")
-    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody SaleModel saleModel,
-            BindingResult result) {
+    // @PutMapping("/update/{id}")
+    // public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody SaleModel saleModel,
+    //         BindingResult result) {
 
-        if (result.hasErrors()) {
-            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
-        }
+    //     if (result.hasErrors()) {
+    //         return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+    //     }
 
-        SaleModel updatedSale = saleService.update(id, saleModel);
+    //     SaleModel updatedSale = saleService.update(id, saleModel);
 
-        return ResponseEntity.ok().body(updatedSale);
-    }
+    //     return ResponseEntity.ok().body(updatedSale);
+    // }
 
-    @DeleteMapping("/delete/{id}")
-    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        saleService.deleteById(id);
+    // @DeleteMapping("/delete/{id}")
+    // public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+    //     saleService.deleteById(id);
 
-        return ResponseEntity.ok().body("Sale deleted");
-    }
+    //     return ResponseEntity.ok().body("Sale deleted");
+    // }
 }

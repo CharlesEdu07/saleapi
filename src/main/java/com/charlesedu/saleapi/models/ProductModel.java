@@ -26,6 +26,7 @@ public class ProductModel {
 
     @NotBlank(message = "Name is mandatory")
     @Size(min = 3, message = "Name must have at least 3 characters")
+    @Column(unique = true)
     private String name;
 
     @NotNull(message = "Price is mandatory")
