@@ -7,5 +7,5 @@ import com.charlesedu.saleapi.models.CustomerModel;
 
 @Repository
 public interface ICustomerRepository extends JpaRepository<CustomerModel, Long> {
-
+    CustomerModel findByTelephone(String telephone);
 }

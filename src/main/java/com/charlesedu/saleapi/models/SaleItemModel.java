@@ -1,5 +1,7 @@
 package com.charlesedu.saleapi.models;
 
+import java.math.BigDecimal;
+
 import com.charlesedu.saleapi.models.keys.SaleItemPK;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -16,12 +18,12 @@ public class SaleItemModel {
     private SaleItemPK id = new SaleItemPK();
 
     private Integer quantity;
-    private Double price;
+    private BigDecimal price;
 
     public SaleItemModel() {
     }
 
-    public SaleItemModel(SaleModel sale, ProductModel product, Integer quantity, Double price) {
+    public SaleItemModel(SaleModel sale, ProductModel product, Integer quantity, BigDecimal price) {
         this.id.setSale(sale);
         this.id.setProduct(product);
         this.quantity = quantity;
@@ -45,12 +47,16 @@ public class SaleItemModel {
         this.quantity = quantity;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
+    }
+
+    public BigDecimal getSubTotal() {
+        return price.multiply(BigDecimal.valueOf(quantity));
     }
 
     @Override

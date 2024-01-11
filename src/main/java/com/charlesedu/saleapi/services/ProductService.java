@@ -19,6 +19,14 @@ public class ProductService {
     private IProductRepository repository;
 
     public ProductModel save(ProductModel product) {
+        if (product.getName() != null) {
+            ProductModel productExists = repository.findByName(product.getName());
+
+            if (productExists != null) {
+                throw new DatabaseException("Product already exists");
+            }
+        }
+
         return repository.save(product);
     }
 
@@ -30,6 +38,12 @@ public class ProductService {
         Optional<ProductModel> product = repository.findById(id);
 
         return product.orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    public ProductModel findByName(String name) {
+        ProductModel product = repository.findByName(name);
+
+        return product;
     }
 
     public ProductModel update(Long id, ProductModel productModel) {

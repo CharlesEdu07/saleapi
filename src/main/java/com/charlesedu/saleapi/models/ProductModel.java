@@ -73,6 +73,16 @@ public class ProductModel {
         this.price = price;
     }
 
+    public Set<SaleModel> getSales() {
+        Set<SaleModel> set = new HashSet<>();
+
+        for (SaleItemModel item : items) {
+            set.add(item.getSale());
+        }
+
+        return set;
+    }
+
     @Override
     public int hashCode() {
         final int prime = 31;

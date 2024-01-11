@@ -7,5 +7,5 @@ import com.charlesedu.saleapi.models.ProductModel;
 
 @Repository
 public interface IProductRepository extends JpaRepository<ProductModel, Long> {
-
+    ProductModel findByName(String name);
 }

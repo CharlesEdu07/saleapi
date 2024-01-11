@@ -1,6 +1,10 @@
 package com.charlesedu.saleapi.models;
 
+import java.math.BigDecimal;
 import java.time.Instant;
+import java.util.HashSet;
+
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -10,6 +14,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @SuppressWarnings("serial")
@@ -27,6 +32,9 @@ public class SaleModel {
     @ManyToOne
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
+
+    @OneToMany(mappedBy = "id.sale")
+    private Set<SaleItemModel> items = new HashSet<>();
 
     public SaleModel() {
     }
@@ -59,6 +67,20 @@ public class SaleModel {
 
     public void setCustomer(CustomerModel customer) {
         this.customer = customer;
+    }
+
+    public Set<SaleItemModel> getItems() {
+        return items;
+    }
+
+    public BigDecimal getTotal() {
+        BigDecimal sum = BigDecimal.ZERO;
+
+        for (SaleItemModel item : items) {
+            sum = sum.add(item.getSubTotal());
+        }
+        
+        return sum;
     }
 
     @Override

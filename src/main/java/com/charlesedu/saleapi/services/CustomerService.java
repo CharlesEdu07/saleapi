@@ -19,6 +19,14 @@ public class CustomerService {
     private ICustomerRepository repository;
 
     public CustomerModel save(CustomerModel customer) {
+        if (customer.getTelephone() != null) {
+            CustomerModel customerExists = repository.findByTelephone(customer.getTelephone());
+
+            if (customerExists != null) {
+                throw new DatabaseException("Customer already exists with this telephone");
+            }
+        }
+
         return repository.save(customer);
     }
 
@@ -30,6 +38,12 @@ public class CustomerService {
         Optional<CustomerModel> customer = repository.findById(id);
 
         return customer.orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    public CustomerModel findByTelephone(String telephone) {
+        CustomerModel customer = repository.findByTelephone(telephone);
+
+        return customer;
     }
 
     public CustomerModel update(Long id, CustomerModel customerModel) {
