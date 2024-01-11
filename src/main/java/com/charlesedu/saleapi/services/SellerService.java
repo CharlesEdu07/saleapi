@@ -14,6 +14,7 @@ import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SellerService {
+    
     @Autowired
     private ISellerRepository repository;
 

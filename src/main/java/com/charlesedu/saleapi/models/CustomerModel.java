@@ -1,9 +1,15 @@
 package com.charlesedu.saleapi.models;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -28,6 +34,10 @@ public class CustomerModel {
 
     @NotNull(message = "Status is mandatory")
     private Boolean status;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "customer")
+    private List<SaleModel> sales = new ArrayList<>();
 
     public CustomerModel() {
     }
@@ -69,6 +79,10 @@ public class CustomerModel {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public List<SaleModel> getSales() {
+        return sales;
     }
 
     @Override
