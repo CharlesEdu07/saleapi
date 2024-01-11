@@ -18,9 +18,9 @@ public class SaleService {
     @Autowired
     private ISaleRepository repository;
 
-    public SaleModel save(SaleModel sale) {
-        return repository.save(sale);
-    }
+    // public SaleModel save(SaleModel sale) {
+        
+    // }
 
     public List<SaleModel> findAll() {
         return repository.findAll();

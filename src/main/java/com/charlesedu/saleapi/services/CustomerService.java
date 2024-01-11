@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.charlesedu.saleapi.dto.CustomerDTO;
 import com.charlesedu.saleapi.models.CustomerModel;
 import com.charlesedu.saleapi.repositories.ICustomerRepository;
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
@@ -78,6 +79,20 @@ public class CustomerService {
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public CustomerModel fromDTO(CustomerDTO customerDTO) {
+        if (customerDTO.getTelephone() != null) {
+            CustomerModel customerExists = repository.findByTelephone(customerDTO.getTelephone());
+
+            if (customerExists != null) {
+                return customerExists;
+            } else {
+                throw new DatabaseException("Customer not found");
+            }
+        } else {
+            throw new DatabaseException("Telephone is required");
         }
     }
 }

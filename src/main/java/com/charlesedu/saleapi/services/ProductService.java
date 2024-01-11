@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.charlesedu.saleapi.dto.ProductDTO;
 import com.charlesedu.saleapi.models.ProductModel;
 import com.charlesedu.saleapi.repositories.IProductRepository;
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
@@ -78,6 +79,20 @@ public class ProductService {
             throw new ResourceNotFoundException(id);
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
+        }
+    }
+
+    public ProductModel fromDTO(ProductDTO productDTO) {
+        if (productDTO.getName() != null) {
+            ProductModel productExists = repository.findByName(productDTO.getName());
+
+            if (productExists != null) {
+                return productExists;
+            } else {
+                throw new DatabaseException("Product not found");
+            }
+        } else {
+            throw new DatabaseException("Product name is required");
         }
     }
 }
