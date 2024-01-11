@@ -1,15 +1,17 @@
 package com.charlesedu.saleapi.dto;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SaleDTO {
     private CustomerDTO customer;
-    private ProductDTO product;
+    private List<ProductDTO> products = new ArrayList<>();
 
     public SaleDTO() {
     }
 
-    public SaleDTO(CustomerDTO customer, ProductDTO product) {
+    public SaleDTO(CustomerDTO customer) {
         this.customer = customer;
-        this.product = product;
     }
 
     public CustomerDTO getCustomer() {
@@ -20,11 +22,11 @@ public class SaleDTO {
         this.customer = customer;
     }
 
-    public ProductDTO getProduct() {
-        return product;
+    public List<ProductDTO> getProducts() {
+        return products;
     }
 
-    public void setProduct(ProductDTO product) {
-        this.product = product;
+    public void setProducts(List<ProductDTO> products) {
+        this.products = products;
     }
 }

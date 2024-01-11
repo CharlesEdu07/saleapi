@@ -1,5 +1,6 @@
 package com.charlesedu.saleapi.services;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.Optional;
 
@@ -7,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
+import com.charlesedu.saleapi.dto.SaleDTO;
+import com.charlesedu.saleapi.models.CustomerModel;
 import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.repositories.ISaleRepository;
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
@@ -18,9 +21,16 @@ public class SaleService {
     @Autowired
     private ISaleRepository repository;
 
-    // public SaleModel save(SaleModel sale) {
-        
-    // }
+    @Autowired
+    private CustomerService customerService;
+
+    public SaleModel save(SaleModel saleModel) {
+        if (customerService.findById(saleModel.getCustomer().getId()) == null) {
+            throw new ResourceNotFoundException(saleModel.getCustomer().getId());
+        }
+
+        return repository.save(saleModel);
+    }
 
     public List<SaleModel> findAll() {
         return repository.findAll();
@@ -65,5 +75,13 @@ public class SaleService {
         } catch (DataIntegrityViolationException e) {
             throw new DatabaseException(e.getMessage());
         }
+    }
+
+    public SaleModel fromDTO(SaleDTO saleDTO) {
+        System.out.println(saleDTO.getCustomer().getTelephone());
+
+        CustomerModel customer = customerService.fromDTO(saleDTO.getCustomer());
+
+        return new SaleModel(null, Instant.now(), customer);
     }
 }
