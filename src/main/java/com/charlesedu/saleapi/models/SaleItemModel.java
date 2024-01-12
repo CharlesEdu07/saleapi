@@ -1,5 +1,6 @@
 package com.charlesedu.saleapi.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 
 import com.charlesedu.saleapi.models.keys.SaleItemPK;
@@ -9,10 +10,10 @@ import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_SALE_ITEM")
-public class SaleItemModel {
+public class SaleItemModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @EmbeddedId
     private SaleItemPK id = new SaleItemPK();
@@ -28,6 +29,10 @@ public class SaleItemModel {
         this.id.setProduct(product);
         this.quantity = quantity;
         this.price = price;
+    }
+
+    public SaleItemPK getId() {
+        return id;
     }
 
     @JsonIgnore

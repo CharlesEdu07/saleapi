@@ -1,11 +1,14 @@
 package com.charlesedu.saleapi.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Set;
 
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,10 +21,10 @@ import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_PRODUCT")
-public class ProductModel {
+public class ProductModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -73,6 +76,7 @@ public class ProductModel {
         this.price = price;
     }
 
+    @JsonIgnore
     public Set<SaleModel> getSales() {
         Set<SaleModel> set = new HashSet<>();
 

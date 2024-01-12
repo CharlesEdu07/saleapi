@@ -1,5 +1,6 @@
 package com.charlesedu.saleapi.models;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.util.HashSet;
@@ -17,10 +18,10 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
-@SuppressWarnings("serial")
 @Entity
 @Table(name = "TB_SALE")
-public class SaleModel {
+public class SaleModel implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
