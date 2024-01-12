@@ -1,5 +1,7 @@
 package com.charlesedu.saleapi.models.keys;
 
+import java.io.Serializable;
+
 import com.charlesedu.saleapi.models.ProductModel;
 import com.charlesedu.saleapi.models.SaleModel;
 
@@ -7,9 +9,9 @@ import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 
-@SuppressWarnings("serial")
 @Embeddable
-public class SaleItemPK {
+public class SaleItemPK implements Serializable {
+    private static final long serialVersionUID = 1L;
 
     @ManyToOne
     @JoinColumn(name = "sale_id")

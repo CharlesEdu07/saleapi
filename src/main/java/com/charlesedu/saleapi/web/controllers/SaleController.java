@@ -16,6 +16,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.charlesedu.saleapi.dto.SaleDTO;
 import com.charlesedu.saleapi.models.SaleItemModel;
 import com.charlesedu.saleapi.models.SaleModel;
+import com.charlesedu.saleapi.repositories.ISaleItemRepository;
 import com.charlesedu.saleapi.services.SaleService;
 
 @RestController
@@ -24,6 +25,9 @@ public class SaleController {
 
     @Autowired
     private SaleService saleService;
+
+    @Autowired
+    private ISaleItemRepository saleItemRepository;
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@RequestBody SaleDTO saleDTO, BindingResult result) {
@@ -48,5 +52,12 @@ public class SaleController {
         List<SaleModel> sales = saleService.findAll();
 
         return ResponseEntity.ok().body(sales);
+    }
+
+    @GetMapping("/items")
+    public ResponseEntity<List<SaleItemModel>> findAllItems() {
+        List<SaleItemModel> salesItems = saleItemRepository.findAll();
+
+        return ResponseEntity.ok().body(salesItems);
     }
 }
