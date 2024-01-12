@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
 import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
@@ -62,6 +63,19 @@ public class ControllerExceptionHandler {
         HttpStatus status = HttpStatus.BAD_REQUEST;
 
         StandardError err = new StandardError(Instant.now(), status.value(), error, "Duplicate entry",
+                request.getRequestURI());
+
+        return ResponseEntity.status(status).body(err);
+    }
+
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<StandardError> noResourceFoundException(NoResourceFoundException e,
+            HttpServletRequest request) {
+        String error = "Resource not found";
+
+        HttpStatus status = HttpStatus.NOT_FOUND;
+
+        StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
                 request.getRequestURI());
 
         return ResponseEntity.status(status).body(err);

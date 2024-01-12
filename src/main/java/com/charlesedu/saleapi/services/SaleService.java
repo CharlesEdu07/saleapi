@@ -3,7 +3,6 @@ package com.charlesedu.saleapi.services;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -57,9 +56,7 @@ public class SaleService {
     }
 
     public SaleModel findById(Long id) {
-        Optional<SaleModel> sale = saleRepository.findById(id);
-
-        return sale.orElseThrow(() -> new ResourceNotFoundException(id));
+        return saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
     public SaleModel fromCustomerDTO(SaleDTO saleDTO) {
@@ -75,7 +72,7 @@ public class SaleService {
             ProductModel productModel = productService.fromDTO(productDTO);
 
             SaleItemModel item = new SaleItemModel();
-            
+
             item.setSale(saleModel);
             item.getId().setProduct(productModel);
             item.setQuantity(productDTO.getQuantity());

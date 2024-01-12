@@ -18,7 +18,6 @@ public class SaleItemPK implements Serializable {
     @JoinColumn(name = "sale_id")
     private SaleModel sale;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductModel product;
