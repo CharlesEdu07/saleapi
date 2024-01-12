@@ -1,6 +1,10 @@
 package com.charlesedu.saleapi.dto;
 
+import jakarta.validation.constraints.NotEmpty;
+
 public class CustomerDTO {
+
+    @NotEmpty(message = "Telephone is mandatory")
     private String telephone;
 
     public CustomerDTO() {

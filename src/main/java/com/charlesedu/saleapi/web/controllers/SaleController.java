@@ -19,6 +19,8 @@ import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.repositories.ISaleItemRepository;
 import com.charlesedu.saleapi.services.SaleService;
 
+import jakarta.validation.Valid;
+
 @RestController
 @RequestMapping("/sales")
 public class SaleController {
@@ -30,9 +32,9 @@ public class SaleController {
     private ISaleItemRepository saleItemRepository;
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@RequestBody SaleDTO saleDTO, BindingResult result) {
+    public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(400).body(result.getAllErrors());
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
         SaleModel saleModel = saleService.fromCustomerDTO(saleDTO);

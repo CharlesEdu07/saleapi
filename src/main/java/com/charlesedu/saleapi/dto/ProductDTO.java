@@ -2,9 +2,19 @@ package com.charlesedu.saleapi.dto;
 
 import java.math.BigDecimal;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+
 public class ProductDTO {
+
+    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be blank")
     private String name;
+
+    @NotNull(message = "Quantity cannot be null")
     private Integer quantity;
+
+    @NotNull(message = "Price cannot be null")
     private BigDecimal price;
 
     public ProductDTO() {
