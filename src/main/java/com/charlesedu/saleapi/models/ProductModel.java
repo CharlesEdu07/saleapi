@@ -40,7 +40,6 @@ public class ProductModel implements Serializable {
     @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
     private BigDecimal price;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "id.product")
     private Set<SaleItemModel> items = new HashSet<>();
 

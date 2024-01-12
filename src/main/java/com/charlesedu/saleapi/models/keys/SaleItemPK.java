@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 import com.charlesedu.saleapi.models.ProductModel;
 import com.charlesedu.saleapi.models.SaleModel;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.JoinColumn;
@@ -17,10 +18,12 @@ public class SaleItemPK implements Serializable {
     @JoinColumn(name = "sale_id")
     private SaleModel sale;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "product_id")
     private ProductModel product;
 
+    @JsonIgnore
     public SaleModel getSale() {
         return sale;
     }

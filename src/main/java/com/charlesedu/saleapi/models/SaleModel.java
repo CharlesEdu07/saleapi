@@ -8,7 +8,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +34,6 @@ public class SaleModel implements Serializable {
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
-    @JsonIgnore
     @OneToMany(mappedBy = "id.sale")
     private Set<SaleItemModel> items = new HashSet<>();
 
