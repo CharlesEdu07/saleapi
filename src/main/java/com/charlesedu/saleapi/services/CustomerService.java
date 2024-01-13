@@ -20,14 +20,6 @@ public class CustomerService {
     private ICustomerRepository repository;
 
     public CustomerModel save(CustomerModel customer) {
-        if (customer.getTelephone() != null) {
-            CustomerModel customerExists = repository.findByTelephone(customer.getTelephone());
-
-            if (customerExists != null) {
-                throw new DatabaseException("Customer already exists with this telephone");
-            }
-        }
-
         return repository.save(customer);
     }
 

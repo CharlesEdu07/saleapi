@@ -3,6 +3,7 @@ package com.charlesedu.saleapi.web.controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -33,6 +34,12 @@ public class CustomerController {
     public ResponseEntity<?> save(@Valid @RequestBody CustomerModel customerModel, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        CustomerModel customer = customerService.findByTelephone(customerModel.getTelephone());
+
+        if (customer != null) {
+            return ResponseEntity.status(HttpStatus.SC_CONFLICT).body("Usuário já existente com este username");
         }
 
         customerModel = customerService.save(customerModel);

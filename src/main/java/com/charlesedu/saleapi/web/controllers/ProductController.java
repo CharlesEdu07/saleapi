@@ -3,6 +3,7 @@ package com.charlesedu.saleapi.web.controllers;
 import java.net.URI;
 import java.util.List;
 
+import org.apache.hc.core5.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
@@ -32,6 +33,12 @@ public class ProductController {
     public ResponseEntity<?> save(@Valid @RequestBody ProductModel productModel, BindingResult result) {
         if (result.hasErrors()) {
             return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        ProductModel product = productService.findByName(productModel.getName());
+
+        if (product != null) {
+            return ResponseEntity.status(HttpStatus.SC_CONFLICT).body("Produto já existente com este nome");
         }
 
         productModel = productService.save(productModel);
