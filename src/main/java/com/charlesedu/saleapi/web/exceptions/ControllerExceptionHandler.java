@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
+import com.charlesedu.saleapi.services.exceptions.InactiveModelException;
 import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -23,6 +24,18 @@ public class ControllerExceptionHandler {
                 String error = "Resource not found";
 
                 HttpStatus status = HttpStatus.NOT_FOUND;
+
+                StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
+                                request.getRequestURI());
+
+                return ResponseEntity.status(status).body(err);
+        }
+
+        @ExceptionHandler(InactiveModelException.class)
+        public ResponseEntity<StandardError> inactiveModel(InactiveModelException e, HttpServletRequest request) {
+                String error = "Inactive model";
+
+                HttpStatus status = HttpStatus.BAD_REQUEST;
 
                 StandardError err = new StandardError(Instant.now(), status.value(), error, e.getMessage(),
                                 request.getRequestURI());

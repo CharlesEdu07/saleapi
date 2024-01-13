@@ -14,6 +14,7 @@ import com.charlesedu.saleapi.models.SaleItemModel;
 import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.repositories.ISaleItemRepository;
 import com.charlesedu.saleapi.repositories.ISaleRepository;
+import com.charlesedu.saleapi.services.exceptions.InactiveModelException;
 import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
 @Service
@@ -32,13 +33,17 @@ public class SaleService {
     private ProductService productService;
 
     public SaleModel save(SaleModel saleModel, List<SaleItemModel> salesItems) {
-        if (customerService.findById(saleModel.getCustomer().getId()) == null) {
+        CustomerModel customer = customerService.findById(saleModel.getCustomer().getId());
+
+        if (customer == null) {
             throw new ResourceNotFoundException(saleModel.getCustomer().getId());
         }
 
-        saleModel = saleRepository.save(saleModel);
+        if (customer.getStatus() == false) {
+            throw new InactiveModelException(saleModel.getCustomer().getId());
+        }
 
-        System.out.println(saleModel.getItems());
+        saleModel = saleRepository.save(saleModel);
 
         for (SaleItemModel item : salesItems) {
             item.getId().setSale(saleModel);

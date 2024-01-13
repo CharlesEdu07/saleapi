@@ -58,6 +58,7 @@ public class CustomerService {
     private void updateData(CustomerModel entity, CustomerModel obj) {
         entity.setName(obj.getName());
         entity.setTelephone(obj.getTelephone());
+        entity.setStatus(obj.getStatus());
     }
 
     public void deleteById(Long id) {
