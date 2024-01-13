@@ -34,6 +34,10 @@ public class SaleModel implements Serializable {
     @JoinColumn(name = "customer_id")
     private CustomerModel customer;
 
+    @ManyToOne
+    @JoinColumn(name = "seller_id")
+    private SellerModel seller;
+
     @OneToMany(mappedBy = "id.sale")
     private Set<SaleItemModel> items = new HashSet<>();
 
@@ -70,6 +74,14 @@ public class SaleModel implements Serializable {
         this.customer = customer;
     }
 
+    public SellerModel getSeller() {
+        return seller;
+    }
+
+    public void setSeller(SellerModel seller) {
+        this.seller = seller;
+    }
+
     public Set<SaleItemModel> getItems() {
         return items;
     }
@@ -80,7 +92,7 @@ public class SaleModel implements Serializable {
         for (SaleItemModel item : items) {
             sum = sum.add(item.getSubTotal());
         }
-        
+
         return sum;
     }
 
