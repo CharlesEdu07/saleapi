@@ -14,7 +14,7 @@ import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class SellerService {
-    
+
     @Autowired
     private ISellerRepository repository;
 
@@ -30,6 +30,10 @@ public class SellerService {
         Optional<SellerModel> seller = repository.findById(id);
 
         return seller.orElseThrow(() -> new ResourceNotFoundException(id));
+    }
+
+    public SellerModel findByUsername(String username) {
+        return repository.findByUsername(username);
     }
 
     public SellerModel update(Long id, SellerModel sellerModel) {

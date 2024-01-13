@@ -7,5 +7,5 @@ import com.charlesedu.saleapi.models.SellerModel;
 
 @Repository
 public interface ISellerRepository extends JpaRepository<SellerModel, Long> {
-    
+    SellerModel findByUsername(String username);
 }

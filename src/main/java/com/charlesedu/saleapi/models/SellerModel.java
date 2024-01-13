@@ -10,6 +10,7 @@ import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat.Style;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -36,6 +37,17 @@ public class SellerModel implements Serializable {
     @Column(nullable = false)
     private String name;
 
+    @NotBlank(message = "Username is mandatory")
+    @Size(min = 3, max = 255)
+    @Column(nullable = false, unique = true)
+    private String username;
+
+    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @NotBlank(message = "Password is mandatory")
+    @Size(min = 3, max = 255)
+    @Column(nullable = false)
+    private String password;
+
     @NotNull
     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
     @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
@@ -56,9 +68,12 @@ public class SellerModel implements Serializable {
     public SellerModel() {
     }
 
-    public SellerModel(Long id, String name, BigDecimal salary, LocalDate admissionDate, LocalDate exitDate) {
+    public SellerModel(Long id, String name, String username, String password, BigDecimal salary,
+            LocalDate admissionDate, LocalDate exitDate) {
         this.id = id;
         this.name = name;
+        this.username = username;
+        this.password = password;
         this.salary = salary;
         this.admissionDate = admissionDate;
         this.exitDate = exitDate;
@@ -78,6 +93,22 @@ public class SellerModel implements Serializable {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public BigDecimal getSalary() {

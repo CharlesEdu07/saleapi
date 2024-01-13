@@ -24,14 +24,14 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/sellers")
 public class SellerController {
-    
+
     @Autowired
     private SellerService sellerService;
 
     @PostMapping("/save")
     public ResponseEntity<?> save(@Valid @RequestBody SellerModel sellerModel, BindingResult result) {
         if (result.hasErrors()) {
-            return ResponseEntity.status(400).body(result.getAllErrors());
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
 
         sellerModel = sellerService.save(sellerModel);
