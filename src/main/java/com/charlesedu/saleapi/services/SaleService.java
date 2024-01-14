@@ -12,6 +12,7 @@ import com.charlesedu.saleapi.models.CustomerModel;
 import com.charlesedu.saleapi.models.ProductModel;
 import com.charlesedu.saleapi.models.SaleItemModel;
 import com.charlesedu.saleapi.models.SaleModel;
+import com.charlesedu.saleapi.models.SellerModel;
 import com.charlesedu.saleapi.repositories.ISaleItemRepository;
 import com.charlesedu.saleapi.repositories.ISaleRepository;
 import com.charlesedu.saleapi.services.exceptions.InactiveModelException;
@@ -32,8 +33,13 @@ public class SaleService {
     @Autowired
     private ProductService productService;
 
-    public SaleModel save(SaleModel saleModel, List<SaleItemModel> salesItems) {
+    @Autowired
+    private SellerService sellerService;
+
+    public SaleModel save(SaleModel saleModel, List<SaleItemModel> salesItems, Long sellerId) {
         CustomerModel customer = customerService.findById(saleModel.getCustomer().getId());
+
+        SellerModel seller = sellerService.findById(sellerId);
 
         if (customer == null) {
             throw new ResourceNotFoundException(saleModel.getCustomer().getId());
@@ -42,6 +48,9 @@ public class SaleService {
         if (customer.getStatus() == false) {
             throw new InactiveModelException(saleModel.getCustomer().getId());
         }
+
+        saleModel.setCustomer(customer);
+        saleModel.setSeller(seller);
 
         saleModel = saleRepository.save(saleModel);
 

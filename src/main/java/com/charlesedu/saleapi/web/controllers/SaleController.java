@@ -20,6 +20,7 @@ import com.charlesedu.saleapi.models.SaleItemModel;
 import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.services.SaleService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 @RestController
@@ -30,16 +31,19 @@ public class SaleController {
     private SaleService saleService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO, BindingResult result) {
+    public ResponseEntity<?> save(@Valid @RequestBody SaleDTO saleDTO, BindingResult result,
+            HttpServletRequest request) {
         if (result.hasErrors()) {
             return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
         }
+
+        Long sellerId = (Long) request.getAttribute("sellerId");
 
         SaleModel saleModel = saleService.fromCustomerDTO(saleDTO);
 
         List<SaleItemModel> salesItems = saleService.fromSaleItemDTO(saleDTO, saleModel);
 
-        saleModel = saleService.save(saleModel, salesItems);
+        saleModel = saleService.save(saleModel, salesItems, sellerId);
 
         URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}").buildAndExpand(saleModel.getId())
                 .toUri();

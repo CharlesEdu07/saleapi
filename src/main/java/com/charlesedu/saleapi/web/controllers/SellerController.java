@@ -63,6 +63,14 @@ public class SellerController {
         return ResponseEntity.ok().body(seller);
     }
 
+    @GetMapping("/list/username/{username}")
+    public ResponseEntity<SellerModel> findByUsername(@PathVariable("username") String username) {
+        SellerModel seller = sellerService.findByUsername(username);
+
+        return ResponseEntity.ok().body(seller);
+    }
+    
+
     @PutMapping("/update/{id}")
     public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody SellerModel sellerModel,
             BindingResult result) {

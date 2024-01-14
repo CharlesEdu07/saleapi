@@ -12,6 +12,8 @@ import com.charlesedu.saleapi.repositories.ISellerRepository;
 import com.charlesedu.saleapi.services.exceptions.DatabaseException;
 import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
+import at.favre.lib.crypto.bcrypt.BCrypt;
+
 @Service
 public class SellerService {
 
@@ -19,6 +21,10 @@ public class SellerService {
     private ISellerRepository repository;
 
     public SellerModel save(SellerModel seller) {
+        var passwordHashred = BCrypt.withDefaults().hashToString(12, seller.getPassword().toCharArray());
+
+        seller.setPassword(passwordHashred);
+
         return repository.save(seller);
     }
 

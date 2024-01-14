@@ -37,18 +37,17 @@ public class SellerModel implements Serializable {
     private Long id;
 
     @NotBlank(message = "Name is mandatory")
-    @Size(min = 3, max = 255)
+    @Size(min = 3, max = 255, message = "Name must be between 3 and 255 characters")
     @Column(nullable = false)
     private String name;
 
     @NotBlank(message = "Username is mandatory")
-    @Size(min = 3, max = 255)
+    @Size(min = 3, max = 255, message = "Username must be between 3 and 255 characters")
     @Column(nullable = false, unique = true)
     private String username;
 
     @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
     @NotBlank(message = "Password is mandatory")
-    @Size(min = 3, max = 255)
     @Column(nullable = false)
     private String password;
 

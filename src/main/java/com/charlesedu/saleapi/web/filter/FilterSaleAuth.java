@@ -27,7 +27,7 @@ public class FilterSaleAuth extends OncePerRequestFilter {
 
         var servletPath = request.getServletPath();
 
-        if (servletPath.startsWith("/sale/")) {
+        if (servletPath.startsWith("/sales/")) {
             if ("OPTIONS".equals(request.getMethod())) {
                 filterChain.doFilter(request, response);
 
@@ -50,18 +50,18 @@ public class FilterSaleAuth extends OncePerRequestFilter {
             String[] credentials = authString.split(":");
 
             if (credentials.length == 2) {
-                String username = credentials[0];
+                String sellerName = credentials[0];
                 String password = credentials[1];
 
-                var user = sellerService.findByUsername(username);
+                var seller = sellerService.findByUsername(sellerName);
 
-                if (user == null) {
+                if (seller == null) {
                     response.sendError(401);
                 } else {
-                    var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), user.getPassword());
+                    var passwordVerify = BCrypt.verifyer().verify(password.toCharArray(), seller.getPassword());
 
                     if (passwordVerify.verified) {
-                        request.setAttribute("idUser", user.getId());
+                        request.setAttribute("sellerId", seller.getId());
 
                         filterChain.doFilter(request, response);
                     } else {
