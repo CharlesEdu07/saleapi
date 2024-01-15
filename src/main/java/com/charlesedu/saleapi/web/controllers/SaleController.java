@@ -123,6 +123,28 @@ public class SaleController {
         }
     }
 
+    @PostMapping("/remove-item/{id}")
+    public ResponseEntity<?> removeItem(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO productDTO,
+            BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        Long sellerId = (Long) request.getAttribute("sellerId");
+
+        SaleModel sellerSale = saleService.findBySellerId(sellerId);
+
+        if (sellerSale == null) {
+            return ResponseEntity.status(400).body("Vendedor não possui vendas");
+        } else {
+            SaleItemModel saleItemModel = saleService.fromSaleItemDTO(id, productDTO);
+
+            SaleModel updatedSale = saleService.removeSaleItemModel(id, saleItemModel);
+
+            return ResponseEntity.ok().body(updatedSale);
+        }
+    }
+
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
         return ResponseEntity.ok().body("Sale deleted");

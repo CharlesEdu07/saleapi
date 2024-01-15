@@ -107,6 +107,16 @@ public class SaleService {
         return sale;
     }
 
+    public SaleModel removeSaleItemModel(Long id, SaleItemModel saleItemModel) {
+        SaleModel sale = saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
+        sale.getItems().remove(saleItemModel);
+
+        saleItemRepository.delete(saleItemModel);
+
+        return sale;
+    }
+
     private void updateData(SaleModel entity, SaleModel obj) {
         entity.setCustomer(obj.getCustomer());
         entity.setMoment(obj.getMoment());
