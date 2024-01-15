@@ -3,6 +3,8 @@ package com.charlesedu.saleapi.services;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -73,7 +75,34 @@ public class SaleService {
         return saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
     }
 
-    public SaleModel fromCustomerDTO(SaleDTO saleDTO) {
+    public SaleModel findBySellerId(Long id) {
+        SaleModel sale = saleRepository.findBySellerId(id);
+
+        return sale;
+    }
+
+    public SaleModel update(Long id, SaleModel saleModel, List<SaleItemModel> salesItems) {
+        Optional<SaleModel> sale = saleRepository.findById(id);
+
+        if (sale.isPresent()) {
+            SaleModel updatedSale = sale.get();
+
+            updateData(updatedSale, saleModel);
+
+            saleRepository.save(updatedSale);
+
+            return updatedSale;
+        } else {
+            throw new ResourceNotFoundException(id);
+        }
+    }
+
+    private void updateData(SaleModel entity, SaleModel obj) {
+        entity.setCustomer(obj.getCustomer());
+        entity.setMoment(obj.getMoment());
+    }
+
+    public SaleModel fromSaleCustomerDTO(SaleDTO saleDTO) {
         CustomerModel customer = customerService.fromDTO(saleDTO.getCustomer());
 
         return new SaleModel(null, Instant.now(), customer);

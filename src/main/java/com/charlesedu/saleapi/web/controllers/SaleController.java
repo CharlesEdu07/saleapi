@@ -7,9 +7,11 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -39,7 +41,7 @@ public class SaleController {
 
         Long sellerId = (Long) request.getAttribute("sellerId");
 
-        SaleModel saleModel = saleService.fromCustomerDTO(saleDTO);
+        SaleModel saleModel = saleService.fromSaleCustomerDTO(saleDTO);
 
         List<SaleItemModel> salesItems = saleService.fromSaleItemDTO(saleDTO, saleModel);
 
@@ -72,5 +74,34 @@ public class SaleController {
         Set<SaleItemModel> items = sale.getItems();
 
         return ResponseEntity.ok().body(items);
+    }
+
+    @PutMapping("/update/{id}")
+    public ResponseEntity<?> update(@PathVariable("id") Long id, @Valid @RequestBody SaleDTO saleDTO,
+            BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        Long sellerId = (Long) request.getAttribute("sellerId");
+
+        SaleModel sellerSale = saleService.findBySellerId(sellerId);
+
+        if (sellerSale == null) {
+            return ResponseEntity.status(400).body("Vendedor não possui vendas");
+        } else {
+            SaleModel saleModel = saleService.fromSaleCustomerDTO(saleDTO);
+
+            List<SaleItemModel> salesItems = saleService.fromSaleItemDTO(saleDTO, saleModel);
+
+            SaleModel updatedSale = saleService.update(id, saleModel, salesItems);
+
+            return ResponseEntity.ok().body(updatedSale);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<?> delete(@PathVariable("id") Long id) {
+        return ResponseEntity.ok().body("Sale deleted");
     }
 }

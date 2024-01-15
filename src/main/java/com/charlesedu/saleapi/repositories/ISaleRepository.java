@@ -7,5 +7,5 @@ import com.charlesedu.saleapi.models.SaleModel;
 
 @Repository
 public interface ISaleRepository extends JpaRepository<SaleModel, Long> {
-    
+    SaleModel findBySellerId(Long id);
 }
