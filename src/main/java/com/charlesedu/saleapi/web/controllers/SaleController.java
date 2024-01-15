@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import com.charlesedu.saleapi.dto.ProductDTO;
 import com.charlesedu.saleapi.dto.SaleDTO;
 import com.charlesedu.saleapi.models.SaleItemModel;
 import com.charlesedu.saleapi.models.SaleModel;
@@ -95,6 +96,28 @@ public class SaleController {
             List<SaleItemModel> salesItems = saleService.fromSaleItemDTO(saleDTO, saleModel);
 
             SaleModel updatedSale = saleService.update(id, saleModel, salesItems);
+
+            return ResponseEntity.ok().body(updatedSale);
+        }
+    }
+
+    @PostMapping("/add-item/{id}")
+    public ResponseEntity<?> addItem(@PathVariable("id") Long id, @Valid @RequestBody ProductDTO productDTO,
+            BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return ResponseEntity.status(400).body(result.getAllErrors().get(0).getDefaultMessage());
+        }
+
+        Long sellerId = (Long) request.getAttribute("sellerId");
+
+        SaleModel sellerSale = saleService.findBySellerId(sellerId);
+
+        if (sellerSale == null) {
+            return ResponseEntity.status(400).body("Vendedor não possui vendas");
+        } else {
+            SaleItemModel saleItemModel = saleService.fromSaleItemDTO(id, productDTO);
+
+            SaleModel updatedSale = saleService.addSaleItemModel(id, saleItemModel);
 
             return ResponseEntity.ok().body(updatedSale);
         }

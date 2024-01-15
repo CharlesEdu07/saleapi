@@ -97,6 +97,16 @@ public class SaleService {
         }
     }
 
+    public SaleModel addSaleItemModel(Long id, SaleItemModel saleItemModel) {
+        SaleModel sale = saleRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException(id));
+
+        saleItemRepository.save(saleItemModel);
+
+        sale.getItems().add(saleItemModel);
+
+        return sale;
+    }
+
     private void updateData(SaleModel entity, SaleModel obj) {
         entity.setCustomer(obj.getCustomer());
         entity.setMoment(obj.getMoment());
@@ -106,6 +116,21 @@ public class SaleService {
         CustomerModel customer = customerService.fromDTO(saleDTO.getCustomer());
 
         return new SaleModel(null, Instant.now(), customer);
+    }
+
+    public SaleItemModel fromSaleItemDTO(Long id, ProductDTO productDTO) {
+        ProductModel productModel = productService.fromDTO(productDTO);
+
+        SaleItemModel item = new SaleItemModel();
+
+        SaleModel saleModel = findById(id);
+
+        item.setSale(saleModel);
+        item.getId().setProduct(productModel);
+        item.setQuantity(productDTO.getQuantity());
+        item.setPrice(productDTO.getPrice());
+
+        return item;
     }
 
     public List<SaleItemModel> fromSaleItemDTO(SaleDTO saleDTO, SaleModel saleModel) {
