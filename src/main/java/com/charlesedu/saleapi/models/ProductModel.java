@@ -37,7 +37,7 @@ public class ProductModel implements Serializable {
 
     @NotNull(message = "Price is mandatory")
     @NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
-    @Column(nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
+    @Column(nullable = false, columnDefinition = "DECIMAL(7,2)")
     private BigDecimal price;
 
     @OneToMany(mappedBy = "id.product")
