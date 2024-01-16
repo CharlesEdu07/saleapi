@@ -147,6 +147,8 @@ public class SaleController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<?> delete(@PathVariable("id") Long id) {
-        return ResponseEntity.ok().body("Sale deleted");
+        saleService.deleteById(id);
+
+        return ResponseEntity.noContent().build();
     }
 }

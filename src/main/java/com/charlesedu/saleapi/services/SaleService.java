@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 
 import com.charlesedu.saleapi.dto.ProductDTO;
@@ -17,6 +18,7 @@ import com.charlesedu.saleapi.models.SaleModel;
 import com.charlesedu.saleapi.models.SellerModel;
 import com.charlesedu.saleapi.repositories.ISaleItemRepository;
 import com.charlesedu.saleapi.repositories.ISaleRepository;
+import com.charlesedu.saleapi.services.exceptions.DatabaseException;
 import com.charlesedu.saleapi.services.exceptions.InactiveModelException;
 import com.charlesedu.saleapi.services.exceptions.ResourceNotFoundException;
 
@@ -120,6 +122,26 @@ public class SaleService {
     private void updateData(SaleModel entity, SaleModel obj) {
         entity.setCustomer(obj.getCustomer());
         entity.setMoment(obj.getMoment());
+    }
+
+    public void deleteById(Long id) {
+        try {
+            if (saleRepository.existsById(id)) {
+                SaleModel sale = findById(id);
+
+                for (SaleItemModel item : sale.getItems()) {
+                    saleItemRepository.delete(item);
+                }
+
+                saleRepository.deleteById(id);
+            } else {
+                throw new ResourceNotFoundException(id);
+            }
+        } catch (ResourceNotFoundException e) {
+            throw new ResourceNotFoundException(id);
+        } catch (DataIntegrityViolationException e) {
+            throw new DatabaseException(e.getMessage());
+        }
     }
 
     public SaleModel fromSaleCustomerDTO(SaleDTO saleDTO) {
